@@ -1,0 +1,11 @@
+:root {
+  /* Couleurs principales ILOHAY */
+  --ilohay-green: #28a745;   /* Vert */
+  --ilohay-red: #dc3545; /* Rouge */
+  --ilohay-white: #ffffff;     /* Blanc */
+
+  /* Variantes utiles */
+  --ilohay-primary-dark: #218838;
+  --ilohay-secondary-dark: #b02a37;
+  --ilohay-gray: #f8f9fa;      /* gris clair (fond) */
+}

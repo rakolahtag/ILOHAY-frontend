@@ -1,0 +1,14 @@
+body {
+  background-color: var(--ilohay-gray);
+  color: var(--ilohay-green);
+}
+
+.btn-ilohay {
+  background-color: var(--ilohay-green);
+  color: var(--ilohay-white);
+  border: none;
+}
+
+.btn-ilohay:hover {
+  background-color: var(--ilohay-primary-dark);
+}
