@@ -5,7 +5,7 @@ import api from "../services/api"; // ton axios configuré
 import "../styles/colors.css";
 import bgImage from "../assets/images/loging_bgd.jpg";
 import Layout from "../components/Layout";
-import CardStat from "../components/CardStat";
+import CardStat from "../components/CardStart";
 import TableList from "../components/TableList";
 
 
@@ -117,25 +117,25 @@ export default function Dashboard() {
 
       {/* Layout tableau de bord  */}
       <Layout>
-      <h2 style={{ color: "var(--ilohay-green)", fontWeight: "bold" }}>
-        Tableau de bord
-      </h2>
+        <h2 style={{ color: "var(--ilohay-green)", fontWeight: "bold" }}>
+          Tableau de bord
+        </h2>
 
-      <Row className="mb-4">
-        <Col md={4}>
-          <CardStat title="Stagiaires inscrits" value="120" />
-        </Col>
-        <Col md={4}>
-          <CardStat title="Formateurs" value="15" color="var(--ilohay-red)" />
-        </Col>
-        <Col md={4}>
-          <CardStat title="Formations actives" value="8" />
-        </Col>
-      </Row>
+        <Row className="mb-4">
+          <Col md={4}>
+            <CardStat title="Stagiaires inscrits" value="120" />
+          </Col>
+          <Col md={4}>
+            <CardStat title="Formateurs" value="15" color="var(--ilohay-red)" />
+          </Col>
+          <Col md={4}>
+            <CardStat title="Formations actives" value="8" />
+          </Col>
+        </Row>
 
-      <h4 style={{ color: "var(--ilohay-green)" }}>Derniers stagiaires</h4>
-      <TableList headers={tableHeaders} data={tableData} />
-    </Layout>
+        <h4 style={{ color: "var(--ilohay-green)" }}>Derniers stagiaires</h4>
+        <TableList headers={tableHeaders} data={tableData} />
+      </Layout>
     </Container>
   );
 }

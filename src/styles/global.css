@@ -12,3 +12,23 @@ body {
 .btn-ilohay:hover {
   background-color: var(--ilohay-primary-dark);
 }
+
+.form-control:hover {
+  border-color: orange;
+}
+
+/* Cible le bouton de fermeture du modal */
+.custom-modal-header .btn-close {
+  filter: invert(40%) sepia(80%) saturate(500%) hue-rotate(85deg) brightness(95%) contrast(90%);
+  /* Ou simplement utiliser la couleur de ton choix avec background ou border si tu veux un style custom */
+}
+
+/* Exemple avec couleur pleine (en utilisant ::before) */
+.custom-modal-header .btn-close::before {
+  background-color: var(--ilohay-green); /* Ta variable CSS verte */
+}
+
+.custom-modal-header .btn-close {
+  filter: invert(40%) sepia(80%) saturate(500%) hue-rotate(85deg) brightness(95%) contrast(90%);
+  /* Ou simplement utiliser la couleur de ton choix avec background ou border si tu veux un style custom */
+}
