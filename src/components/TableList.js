@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Table } from "react-bootstrap";
+import defaultPhoto from "../assets/images/PasDePhoto.png";
 
 function TableList({ data, onEdit, onDelete, showActions = true }) {
   if (!data || data.length === 0) {
@@ -10,6 +11,7 @@ function TableList({ data, onEdit, onDelete, showActions = true }) {
     <Table striped bordered hover responsive className="mt-3">
       <thead style={{ backgroundColor: "var(--ilohay-green)", color: "white" }}>
         <tr>
+          <th>Photo</th>
           <th>Email</th>
           <th>Nom</th>
           <th>Prénom</th>
@@ -20,7 +22,6 @@ function TableList({ data, onEdit, onDelete, showActions = true }) {
           <th>Adresse</th>
           <th>Pays d'origine</th>
           <th>Niveau en classe</th>
-          <th>Photo</th>
           {showActions && <th>Actions</th>}
         </tr>
       </thead>
@@ -28,17 +29,17 @@ function TableList({ data, onEdit, onDelete, showActions = true }) {
         {data.map((stagiaire) => (
           <tr key={stagiaire.id}>
             <td>
-              {stagiaire.photo ? (
                 <img
-                  src={`http://localhost:8000/storage/${stagiaire.photo}`}
+                  src={
+                    stagiaire.photo
+                    ? `http://localhost:8000/storage/${stagiaire.photo}`
+                    : defaultPhoto
+                  }
                   alt="stagiaire"
                   width="50"
                   height="50"
                   style={{ objectFit: "cover", borderRadius: "5px" }}
                 />
-              ) : (
-                "—"
-              )}
             </td>
             <td>{stagiaire.email}</td>
             <td>{stagiaire.nom}</td>

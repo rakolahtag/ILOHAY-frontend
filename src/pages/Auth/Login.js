@@ -2,24 +2,30 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Form, Button, Alert } from "react-bootstrap";
 import api from "../../services/api";
-import "../../styles/colors.css"; // import des couleurs
+import "../../styles/colors.css";
 import "../../styles/global.css";
 import bgImage from "../../assets/images/loging_bgd.jpg";
+import useLogger from "../../hooks/useLogger"; // ✅ import du hook
+
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { logAction } = useLogger(); // ✅ instancier le hook
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const res = await api.post("/auth/login", { email, password });
       localStorage.setItem("token", res.data.token); // stocker le token
+
+      await logAction("Connexion réussie"); // ✅ log succès
       navigate("/dashboard");
     } catch (err) {
       setError("Email ou mot de passe incorrect.");
+      await logAction("Échec de connexion"); // ✅ log échec
     }
   };
 
@@ -27,20 +33,22 @@ export default function Login() {
     <Container
       fluid
       className="d-flex vh-100 justify-content-center align-items-center"
-      style={{ backgroundImage: `url(${bgImage})`,
+      style={{
+        backgroundImage: `url(${bgImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        position: "relative", }}
+        position: "relative",
+      }}
     >
       <div
         className="p-4 shadow rounded"
         style={{
-            width: "350px",
-            backgroundColor: "var(--ilohay-white)",
-            borderTop: "5px solid var(--ilohay-green)",
-            opacity: 0.95,
-            position: "relative",
-            zIndex: 2, // important : au-dessus de l’overlay
+          width: "350px",
+          backgroundColor: "var(--ilohay-white)",
+          borderTop: "5px solid var(--ilohay-green)",
+          opacity: 0.95,
+          position: "relative",
+          zIndex: 2,
         }}
       >
         <h3
@@ -103,13 +111,16 @@ export default function Login() {
           >
             Se connecter
           </Button>
+
           <p className="mt-3 text-center">
             Pas encore de compte ?{" "}
-            <a href="/register" style={{ color: "var(--ilohay-green)", fontWeight: "bold" }}>
-                Inscrivez-vous
+            <a
+              href="/register"
+              style={{ color: "var(--ilohay-green)", fontWeight: "bold" }}
+            >
+              Inscrivez-vous
             </a>
-            </p>
-
+          </p>
         </Form>
       </div>
     </Container>

@@ -6,6 +6,7 @@ import "../styles/colors.css";
 import bgImage from "../assets/images/loging_bgd.jpg";
 import Layout from "../components/Layout";
 import TableList from "../components/TableList"; // Importer TableList pour afficher les stagiaires
+import useLogger from "../hooks/useLogger";
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
@@ -13,6 +14,7 @@ export default function Dashboard() {
   const [stagiaires, setStagiaires] = useState([]); // Nouveau state pour les stagiaires
   const [error, setError] = useState(""); // Pour gérer les erreurs d'API
   const navigate = useNavigate();
+  const { logAction } = useLogger();
 
   // Charger les infos utilisateur et les stagiaires au montage
   useEffect(() => {
@@ -29,6 +31,7 @@ export default function Dashboard() {
       })
       .then((res) => {
         setUser(res.data);
+        logAction("Accès au Dashboard");
         setLoading(false);
       })
       .catch(() => {
@@ -59,6 +62,7 @@ export default function Dashboard() {
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      await logAction("Déconnexion");
     } catch (err) {
       console.error("Erreur logout", err);
     } finally {
@@ -69,7 +73,8 @@ export default function Dashboard() {
 
   // Redirection vers la page Stagiaires pour gérer les actions CRUD
   const handleManageStagiaires = () => {
-    navigate("/stagiaires"); // Assure-toi que tu as la route /stagiaires
+    logAction("Navigation vers la page Stagiaires");
+    navigate("/stagiaires");
   };
 
   if (loading) {
