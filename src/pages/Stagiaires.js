@@ -14,15 +14,20 @@ const Stagiaires = () => {
   // Modal states
   const [showModal, setShowModal] = useState(false);
   const [newStagiaire, setNewStagiaire] = useState({
-    email: '',
-    nom: '',
-    prenom: '',
-    telephone: '',
-    genre: '',
-    cin: '',
+    email: "",
+    nom: "",
+    prenom: "",
+    telephone: "",
+    genre: "",
+    cin: "",
+    nationalite: "",
+    adresse: "",
+    pays_origine: "",
+    niveau_en_classe: "",
+    photo: null,
   });
-  const [editMode, setEditMode] = useState(false); // Mode édition
-  const [selectedStagiaire, setSelectedStagiaire] = useState(null); // Stagiaire à éditer
+  const [editMode, setEditMode] = useState(false);
+  const [selectedStagiaire, setSelectedStagiaire] = useState(null);
 
   // Fetch stagiaires
   useEffect(() => {
@@ -32,11 +37,11 @@ const Stagiaires = () => {
   const fetchStagiaires = async () => {
     setLoading(true);
     try {
-      const response = await api.get('/auth/stagiaires');
+      const response = await api.get("/auth/stagiaires");
       setStagiaires(response.data);
     } catch (err) {
       console.error(err);
-      setError('Erreur lors du chargement des stagiaires');
+      setError("Erreur lors du chargement des stagiaires");
     } finally {
       setLoading(false);
     }
@@ -50,29 +55,45 @@ const Stagiaires = () => {
   // Handle form submit (create or update)
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const formData = new FormData();
+    Object.keys(newStagiaire).forEach((key) => {
+      formData.append(key, newStagiaire[key]);
+    });
+
     try {
       if (editMode) {
-        // Update existing stagiaire
-        await api.put(`/auth/stagiaires/${selectedStagiaire.id}`, newStagiaire);
+        await api.post(
+          `/auth/stagiaires/${selectedStagiaire.id}?_method=PUT`,
+          formData,
+          { headers: { "Content-Type": "multipart/form-data" } }
+        );
       } else {
-        // Create new stagiaire
-        await api.post('/auth/stagiaires', newStagiaire);
+        await api.post("/auth/stagiaires", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
       }
+
       setShowModal(false);
       setNewStagiaire({
-        email: '',
-        nom: '',
-        prenom: '',
-        telephone: '',
-        genre: '',
-        cin: '',
+        email: "",
+        nom: "",
+        prenom: "",
+        telephone: "",
+        genre: "",
+        cin: "",
+        nationalite: "",
+        adresse: "",
+        pays_origine: "",
+        niveau_en_classe: "",
+        photo: null,
       });
-      fetchStagiaires(); // Recharger la liste des stagiaires
-      setEditMode(false); // Reset edit mode
-      setSelectedStagiaire(null); // Reset selected stagiaire
+      fetchStagiaires();
+      setEditMode(false);
+      setSelectedStagiaire(null);
     } catch (err) {
       console.error(err);
-      alert('Erreur lors de la création ou modification du stagiaire');
+      alert("Erreur lors de la création ou modification du stagiaire");
     }
   };
 
@@ -86,22 +107,30 @@ const Stagiaires = () => {
       telephone: stagiaire.telephone,
       genre: stagiaire.genre,
       cin: stagiaire.cin,
+      nationalite: stagiaire.nationalite,
+      adresse: stagiaire.adresse,
+      pays_origine: stagiaire.pays_origine,
+      niveau_en_classe: stagiaire.niveau_en_classe,
+      photo: null, // on ne pré-remplit pas pour l'image
     });
     setEditMode(true);
-    setShowModal(true); // Show modal in edit mode
+    setShowModal(true);
   };
 
   // Handle delete action
   const handleDelete = async (id) => {
-    const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer ce stagiaire ?");
+    const confirmDelete = window.confirm(
+      "Êtes-vous sûr de vouloir supprimer ce stagiaire ?"
+    );
     if (confirmDelete) {
       await api.delete(`/auth/stagiaires/${id}`);
-      fetchStagiaires(); // Recharger la liste après suppression
+      fetchStagiaires();
     }
   };
 
   return (
-    <div className="app-container"
+    <div
+      className="app-container"
       style={{
         backgroundImage: `url(${bgImage})`,
         backgroundSize: "cover",
@@ -128,19 +157,20 @@ const Stagiaires = () => {
           {loading && <p>Chargement des stagiaires...</p>}
           {error && <p style={{ color: "red" }}>{error}</p>}
 
-          {/* ✅ Tableau d’affichage */}
           {!loading && !error && (
             <TableList
               data={stagiaires}
-              onEdit={handleEdit}   // Passer la fonction handleEdit
-              onDelete={handleDelete} // Passer la fonction handleDelete
+              onEdit={handleEdit}
+              onDelete={handleDelete}
             />
           )}
 
-          {/* ✅ Modal Formulaire (ton code existant) */}
+          {/* ✅ Modal Formulaire */}
           <Modal show={showModal} onHide={() => setShowModal(false)}>
             <Modal.Header closeButton>
-              <Modal.Title>{editMode ? "Modifier un stagiaire" : "Ajouter un stagiaire"}</Modal.Title>
+              <Modal.Title>
+                {editMode ? "Modifier un stagiaire" : "Ajouter un stagiaire"}
+              </Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Form onSubmit={handleSubmit}>
@@ -208,6 +238,58 @@ const Stagiaires = () => {
                     required
                   />
                 </Form.Group>
+
+                {/* ✅ Champs ajoutés */}
+                <Form.Group className="mb-3">
+                  <Form.Label>Nationalité</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="nationalite"
+                    value={newStagiaire.nationalite}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Adresse</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="adresse"
+                    value={newStagiaire.adresse}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Pays d'origine</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="pays_origine"
+                    value={newStagiaire.pays_origine}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Niveau en classe</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="niveau_en_classe"
+                    value={newStagiaire.niveau_en_classe}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Photo</Form.Label>
+                  <Form.Control
+                    type="file"
+                    name="photo"
+                    onChange={(e) =>
+                      setNewStagiaire({
+                        ...newStagiaire,
+                        photo: e.target.files[0],
+                      })
+                    }
+                  />
+                </Form.Group>
+
                 <Button variant="success" type="submit">
                   {editMode ? "Mettre à jour" : "Enregistrer"}
                 </Button>

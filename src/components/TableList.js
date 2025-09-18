@@ -16,24 +16,46 @@ function TableList({ data, onEdit, onDelete, showActions = true }) {
           <th>Téléphone</th>
           <th>Genre</th>
           <th>CIN</th>
-          {showActions && <th>Actions</th>} {/* Afficher la colonne Actions seulement si showActions est true */}
+          <th>Nationalité</th>
+          <th>Adresse</th>
+          <th>Pays d'origine</th>
+          <th>Niveau en classe</th>
+          <th>Photo</th>
+          {showActions && <th>Actions</th>}
         </tr>
       </thead>
       <tbody>
         {data.map((stagiaire) => (
           <tr key={stagiaire.id}>
+            <td>
+              {stagiaire.photo ? (
+                <img
+                  src={`http://localhost:8000/storage/${stagiaire.photo}`}
+                  alt="stagiaire"
+                  width="50"
+                  height="50"
+                  style={{ objectFit: "cover", borderRadius: "5px" }}
+                />
+              ) : (
+                "—"
+              )}
+            </td>
             <td>{stagiaire.email}</td>
             <td>{stagiaire.nom}</td>
             <td>{stagiaire.prenom}</td>
             <td>{stagiaire.telephone}</td>
             <td>{stagiaire.genre}</td>
             <td>{stagiaire.cin}</td>
+            <td>{stagiaire.nationalite}</td>
+            <td>{stagiaire.adresse}</td>
+            <td>{stagiaire.pays_origine}</td>
+            <td>{stagiaire.niveau_en_classe}</td>
             {showActions && (
               <td>
-                {/* Boutons Modifier et Supprimer */}
                 <Button
                   variant="primary"
-                  onClick={() => onEdit(stagiaire)} // Appel de la fonction de modification
+                  size="sm"
+                  onClick={() => onEdit(stagiaire)}
                   style={{
                     backgroundColor: "var(--ilohay-green)",
                     borderColor: "var(--ilohay-green)",
@@ -43,7 +65,8 @@ function TableList({ data, onEdit, onDelete, showActions = true }) {
                 </Button>{" "}
                 <Button
                   variant="danger"
-                  onClick={() => onDelete(stagiaire.id)} // Appel de la fonction de suppression
+                  size="sm"
+                  onClick={() => onDelete(stagiaire.id)}
                 >
                   Supprimer
                 </Button>

@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Stagiaires from "./pages/Stagiaires";
 import './styles/colors.css';
+import Participants from "./pages/Participants";
 
 function App() {
   return (
@@ -19,6 +20,10 @@ function App() {
 
         {/* Page Stagiaires après connexion */}
         <Route path="/stagiaires" element={<Stagiaires />} />
+
+        {/* Page Participants après connexion */}
+        <Route path="/participants" element={<Participants />} />
+
         
         {/* Page Dashboard après connexion */}
         <Route path="/dashboard" element={<Dashboard />} />

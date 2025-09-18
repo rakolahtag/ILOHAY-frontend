@@ -20,6 +20,9 @@ export default function Sidebar() {
         <Nav.Link href="/stagiaires" style={{ color: "var(--ilohay-white)" }}>
           Stagiaires
         </Nav.Link>
+        <Nav.Link href="/participants" style={{ color: "var(--ilohay-white)" }}>
+          Participants
+        </Nav.Link>
         <Nav.Link href="/formateurs" style={{ color: "var(--ilohay-white)" }}>
           Formateurs
         </Nav.Link>
