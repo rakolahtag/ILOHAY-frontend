@@ -7,6 +7,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Stagiaires from "./pages/Stagiaires";
 import './styles/colors.css';
 import Participants from "./pages/Participants";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -23,10 +24,6 @@ function App() {
 
         {/* Page Participants après connexion */}
         <Route path="/participants" element={<Participants />} />
-
-        
-        {/* Page Dashboard après connexion */}
-        <Route path="/dashboard" element={<Dashboard />} />
 
 
         {/* Dashboard protégé */}

@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import TableList from "../components/TableList";
 import Layout from "../components/Layout";
 import api from "../services/api";
 import "../styles/global.css";
-import bgImage from "../assets/images/loging_bgd.jpg";
 
 const Stagiaires = () => {
   const [stagiaires, setStagiaires] = useState([]);
@@ -129,16 +128,7 @@ const Stagiaires = () => {
   };
 
   return (
-    <div
-      className="app-container"
-      style={{
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        position: "relative",
-      }}
-    >
-      <Layout>
+      <Layout >
         <h1 style={{ color: "var(--ilohay-green)" }}>Liste des Stagiaires</h1>
 
         <div className="content">
@@ -298,7 +288,6 @@ const Stagiaires = () => {
           </Modal>
         </div>
       </Layout>
-    </div>
   );
 };
 
