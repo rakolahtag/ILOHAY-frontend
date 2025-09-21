@@ -7,7 +7,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Stagiaires from "./pages/Stagiaires";
 import './styles/colors.css';
 import Participants from "./pages/Participants";
-import Footer from "./components/Footer";
+import Formateurs from "./pages/Formateurs";
 
 function App() {
   return (
@@ -25,6 +25,8 @@ function App() {
         {/* Page Participants après connexion */}
         <Route path="/participants" element={<Participants />} />
 
+        {/* Page Formateurs après connexion */}
+        <Route path="/formateurs" element={<Formateurs />} />
 
         {/* Dashboard protégé */}
         <Route

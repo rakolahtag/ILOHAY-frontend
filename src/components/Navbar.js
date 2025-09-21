@@ -107,7 +107,6 @@ export default function ILOHAYNavbar({ onToggleSidebar }) {
                 marginLeft: "20px",
                 backgroundColor: "var(--ilohay-red)",
                 border: "none",
-                fontWeight: "bold",
               }}
             >
               Déconnexion

@@ -57,6 +57,7 @@ const Stagiaires = () => {
 
     const formData = new FormData();
     Object.keys(newStagiaire).forEach((key) => {
+      if (key === "photo" && !newStagiaire[key]) return; // ne pas envoyer si null
       formData.append(key, newStagiaire[key]);
     });
 
@@ -75,6 +76,7 @@ const Stagiaires = () => {
 
       setShowModal(false);
       setNewStagiaire({
+        photo: null,
         email: "",
         nom: "",
         prenom: "",
@@ -85,7 +87,6 @@ const Stagiaires = () => {
         adresse: "",
         pays_origine: "",
         niveau_en_classe: "",
-        photo: null,
       });
       fetchStagiaires();
       setEditMode(false);
@@ -100,17 +101,17 @@ const Stagiaires = () => {
   const handleEdit = (stagiaire) => {
     setSelectedStagiaire(stagiaire);
     setNewStagiaire({
-      email: stagiaire.email,
-      nom: stagiaire.nom,
-      prenom: stagiaire.prenom,
-      telephone: stagiaire.telephone,
-      genre: stagiaire.genre,
-      cin: stagiaire.cin,
-      nationalite: stagiaire.nationalite,
-      adresse: stagiaire.adresse,
-      pays_origine: stagiaire.pays_origine,
-      niveau_en_classe: stagiaire.niveau_en_classe,
-      photo: null, // on ne pré-remplit pas pour l'image
+      photo: null,
+      email: stagiaire.email || "",
+      nom: stagiaire.nom || "",
+      prenom: stagiaire.prenom || "",
+      telephone: stagiaire.telephone || "",
+      genre: stagiaire.genre || "",
+      cin: stagiaire.cin || "",
+      nationalite: stagiaire.nationalite || "",
+      adresse: stagiaire.adresse || "",
+      pays_origine: stagiaire.pays_origine || "",
+      niveau_en_classe: stagiaire.niveau_en_classe || "",
     });
     setEditMode(true);
     setShowModal(true);

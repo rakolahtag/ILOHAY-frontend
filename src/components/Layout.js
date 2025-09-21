@@ -23,6 +23,7 @@ export default function Layout({ children }) {
             flex: 1,
             marginLeft: isSidebarOpen ? "20px" : "0",
             transition: "margin-left 0.3s ease-in-out",
+            position: "relative",
             padding: "20px",
             paddingTop: "80px", // ✅ Décale automatiquement sous la navbar
             minHeight: "100vh",

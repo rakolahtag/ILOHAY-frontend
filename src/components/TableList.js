@@ -4,70 +4,107 @@ import defaultPhoto from "../assets/images/PasDePhoto.png";
 
 function TableList({ data, onEdit, onDelete, showActions = true }) {
   if (!data || data.length === 0) {
-    return <p>Aucun stagiaire trouvé.</p>;
+    return <p>Aucune donnée trouvée.</p>;
+  }
+
+  // ✅ Détection des colonnes selon le type d'objet
+  let columns = [];
+
+  if (data[0].hasOwnProperty("specialite")) {
+    // Formateurs
+    columns = [
+      { key: "photo", label: "Photo" },
+      { key: "email", label: "Email" },
+      { key: "nom", label: "Nom" },
+      { key: "prenom", label: "Prénom" },
+      { key: "telephone", label: "Téléphone" },
+      { key: "genre", label: "Genre" },
+      { key: "cin", label: "CIN" },
+      { key: "nationalite", label: "Nationalité" },
+      { key: "adresse", label: "Adresse" },
+      { key: "paysOrigine", label: "Pays d'origine" },
+      { key: "specialite", label: "Spécialité" },
+    ];
+  } else if (data[0].hasOwnProperty("entiteOrigine")) {
+    // Participants
+    columns = [
+      { key: "photo", label: "Photo" },
+      { key: "email", label: "Email" },
+      { key: "nom", label: "Nom" },
+      { key: "prenom", label: "Prénom" },
+      { key: "telephone", label: "Téléphone" },
+      { key: "genre", label: "Genre" },
+      { key: "cin", label: "CIN" },
+      { key: "nationalite", label: "Nationalité" },
+      { key: "adresse", label: "Adresse" },
+      { key: "paysOrigine", label: "Pays d'origine" },
+      { key: "entiteOrigine", label: "Entité d'origine" },
+    ];
+  } else {
+    // Stagiaires par défaut
+    columns = [
+      { key: "photo", label: "Photo" },
+      { key: "email", label: "Email" },
+      { key: "nom", label: "Nom" },
+      { key: "prenom", label: "Prénom" },
+      { key: "telephone", label: "Téléphone" },
+      { key: "genre", label: "Genre" },
+      { key: "cin", label: "CIN" },
+      { key: "nationalite", label: "Nationalité" },
+      { key: "adresse", label: "Adresse" },
+      { key: "pays_origine", label: "Pays d'origine" },
+      { key: "niveau_en_classe", label: "Niveau en classe" },
+    ];
   }
 
   return (
     <Table striped bordered hover responsive className="mt-3">
       <thead style={{ backgroundColor: "var(--ilohay-green)", color: "white" }}>
         <tr>
-          <th>Photo</th>
-          <th>Email</th>
-          <th>Nom</th>
-          <th>Prénom</th>
-          <th>Téléphone</th>
-          <th>Genre</th>
-          <th>CIN</th>
-          <th>Nationalité</th>
-          <th>Adresse</th>
-          <th>Pays d'origine</th>
-          <th>Niveau en classe</th>
+          {columns.map((col) => (
+            <th key={col.key}>{col.label}</th>
+          ))}
           {showActions && <th>Actions</th>}
         </tr>
       </thead>
       <tbody>
-        {data.map((stagiaire) => (
-          <tr key={stagiaire.id}>
-            <td>
-                <img
-                  src={
-                    stagiaire.photo
-                    ? `http://localhost:8000/storage/${stagiaire.photo}`
-                    : defaultPhoto
-                  }
-                  alt="stagiaire"
-                  width="50"
-                  height="50"
-                  style={{ objectFit: "cover", borderRadius: "5px" }}
-                />
-            </td>
-            <td>{stagiaire.email}</td>
-            <td>{stagiaire.nom}</td>
-            <td>{stagiaire.prenom}</td>
-            <td>{stagiaire.telephone}</td>
-            <td>{stagiaire.genre}</td>
-            <td>{stagiaire.cin}</td>
-            <td>{stagiaire.nationalite}</td>
-            <td>{stagiaire.adresse}</td>
-            <td>{stagiaire.pays_origine}</td>
-            <td>{stagiaire.niveau_en_classe}</td>
+        {data.map((item) => (
+          <tr key={item.id}>
+            {columns.map((col) => (
+              <td key={col.key}>
+                {col.key === "photo" ? (
+                  <img
+                    src={
+                      item[col.key]
+                        ? `http://127.0.0.1:8000/storage/${item[col.key]}`
+                        : defaultPhoto
+                    }
+                    alt="photo"
+                    style={{
+                      width: "50px",
+                      height: "50px",
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                    }}
+                  />
+                ) : (
+                  item[col.key] || "-"
+                )}
+              </td>
+            ))}
             {showActions && (
               <td>
                 <Button
-                  variant="primary"
+                  variant="success"
                   size="sm"
-                  onClick={() => onEdit(stagiaire)}
-                  style={{
-                    backgroundColor: "var(--ilohay-green)",
-                    borderColor: "var(--ilohay-green)",
-                  }}
+                  onClick={() => onEdit(item)}
                 >
-                  Modifier
+                  Éditer
                 </Button>{" "}
                 <Button
-                  variant="danger"
+                  style={{ backgroundColor: "var(--ilohay-red)", border: "none" }}
                   size="sm"
-                  onClick={() => onDelete(stagiaire.id)}
+                  onClick={() => onDelete(item.id)}
                 >
                   Supprimer
                 </Button>

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "../styles/colors.css";
 
 export default function Sidebar({ isOpen }) {
+  
   return (
     <div
       style={{

@@ -5,14 +5,14 @@ import Layout from "../components/Layout";
 import api from "../services/api";
 import "../styles/global.css";
 
-const Participants = () => {
-  const [participants, setParticipants] = useState([]);
+const Formateurs = () => {
+  const [formateurs, setFormateurs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   // Modal states
   const [showModal, setShowModal] = useState(false);
-  const [newParticipant, setNewParticipant] = useState({
+  const [newFormateur, setNewFormateur] = useState({
     photo: null,
     email: "",
     nom: "",
@@ -23,24 +23,24 @@ const Participants = () => {
     nationalite: "",
     adresse: "",
     paysOrigine: "",
-    entiteOrigine: "", // ✅ Champ spécifique aux participants
+    specialite: "",
   });
   const [editMode, setEditMode] = useState(false);
-  const [selectedParticipant, setSelectedParticipant] = useState(null);
+  const [selectedFormateur, setSelectedFormateur] = useState(null);
 
-  // Fetch participants
+  // Fetch formateurs
   useEffect(() => {
-    fetchParticipants();
+    fetchFormateurs();
   }, []);
 
-  const fetchParticipants = async () => {
+  const fetchFormateurs = async () => {
     setLoading(true);
     try {
-      const response = await api.get("/auth/participants");
-      setParticipants(response.data);
+      const response = await api.get("/auth/formateurs");
+      setFormateurs(response.data);
     } catch (err) {
       console.error(err);
-      setError("Erreur lors du chargement des participants");
+      setError("Erreur lors du chargement des formateurs");
     } finally {
       setLoading(false);
     }
@@ -48,7 +48,7 @@ const Participants = () => {
 
   // Handle input changes
   const handleChange = (e) => {
-    setNewParticipant({ ...newParticipant, [e.target.name]: e.target.value });
+    setNewFormateur({ ...newFormateur, [e.target.name]: e.target.value });
   };
 
   // Handle form submit (create or update)
@@ -56,15 +56,12 @@ const Participants = () => {
     e.preventDefault();
     try {
       if (editMode) {
-        await api.put(
-          `/auth/participants/${selectedParticipant.id}`,
-          newParticipant
-        );
+        await api.put(`/auth/formateurs/${selectedFormateur.id}`, newFormateur);
       } else {
-        await api.post("/auth/participants", newParticipant);
+        await api.post("/auth/formateurs", newFormateur);
       }
       setShowModal(false);
-      setNewParticipant({
+      setNewFormateur({
         photo: null,
         email: "",
         nom: "",
@@ -75,32 +72,32 @@ const Participants = () => {
         nationalite: "",
         adresse: "",
         paysOrigine: "",
-        entiteOrigine: "",
+        specialite: "",
       });
-      fetchParticipants();
+      fetchFormateurs();
       setEditMode(false);
-      setSelectedParticipant(null);
+      setSelectedFormateur(null);
     } catch (err) {
       console.error(err);
-      alert("Erreur lors de la création ou modification du participant");
+      alert("Erreur lors de la création ou modification du formateur");
     }
   };
 
   // Handle edit action
-  const handleEdit = (participant) => {
-    setSelectedParticipant(participant);
-    setNewParticipant({
+  const handleEdit = (formateur) => {
+    setSelectedFormateur(formateur);
+    setNewFormateur({
       photo: null,
-      email: participant.email || "",
-      nom: participant.nom || "",
-      prenom: participant.prenom || "",
-      telephone: participant.telephone || "",
-      genre: participant.genre || "",
-      cin: participant.cin || "",
-      nationalite: participant.nationalite || "",
-      adresse: participant.adresse || "",
-      paysOrigine: participant.paysOrigine || "",
-      entiteOrigine: participant.entiteOrigine || "",
+      email: formateur.email || "",
+      nom: formateur.nom || "",
+      prenom: formateur.prenom || "",
+      telephone: formateur.telephone || "",
+      genre: formateur.genre || "",
+      cin: formateur.cin || "",
+      nationalite: formateur.nationalite || "",
+      adresse: formateur.adresse || "",
+      paysOrigine: formateur.paysOrigine || "",
+      specialite: formateur.specialite || "",
     });
     setEditMode(true);
     setShowModal(true);
@@ -109,17 +106,17 @@ const Participants = () => {
   // Handle delete action
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
-      "Êtes-vous sûr de vouloir supprimer ce participant ?"
+      "Êtes-vous sûr de vouloir supprimer ce formateur ?"
     );
     if (confirmDelete) {
-      await api.delete(`/auth/participants/${id}`);
-      fetchParticipants();
+      await api.delete(`/auth/formateurs/${id}`);
+      fetchFormateurs();
     }
   };
 
   return (
     <Layout>
-      <h1 style={{ color: "var(--ilohay-green)" }}>Liste des Participants</h1>
+      <h1 style={{ color: "var(--ilohay-green)" }}>Liste des Formateurs</h1>
 
       <div className="content">
         <Button
@@ -131,16 +128,16 @@ const Participants = () => {
             fontWeight: "bold",
           }}
         >
-          Ajouter un participant
+          Ajouter un formateur
         </Button>
 
-        {loading && <p>Chargement des participants...</p>}
+        {loading && <p>Chargement des formateurs...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
 
         {/* ✅ Tableau d’affichage */}
         {!loading && !error && (
           <TableList
-            data={participants}
+            data={formateurs}
             onEdit={handleEdit}
             onDelete={handleDelete}
           />
@@ -150,7 +147,7 @@ const Participants = () => {
         <Modal show={showModal} onHide={() => setShowModal(false)}>
           <Modal.Header closeButton>
             <Modal.Title>
-              {editMode ? "Modifier un participant" : "Ajouter un participant"}
+              {editMode ? "Modifier un formateur" : "Ajouter un formateur"}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -160,7 +157,7 @@ const Participants = () => {
                 <Form.Control
                   type="email"
                   name="email"
-                  value={newParticipant.email}
+                  value={newFormateur.email}
                   onChange={handleChange}
                   required
                 />
@@ -170,7 +167,7 @@ const Participants = () => {
                 <Form.Control
                   type="text"
                   name="nom"
-                  value={newParticipant.nom}
+                  value={newFormateur.nom}
                   onChange={handleChange}
                   required
                 />
@@ -180,7 +177,7 @@ const Participants = () => {
                 <Form.Control
                   type="text"
                   name="prenom"
-                  value={newParticipant.prenom}
+                  value={newFormateur.prenom}
                   onChange={handleChange}
                   required
                 />
@@ -190,7 +187,7 @@ const Participants = () => {
                 <Form.Control
                   type="text"
                   name="telephone"
-                  value={newParticipant.telephone}
+                  value={newFormateur.telephone}
                   onChange={handleChange}
                   placeholder="+261..."
                   required
@@ -200,7 +197,7 @@ const Participants = () => {
                 <Form.Label>Genre</Form.Label>
                 <Form.Select
                   name="genre"
-                  value={newParticipant.genre}
+                  value={newFormateur.genre}
                   onChange={handleChange}
                   required
                 >
@@ -214,7 +211,7 @@ const Participants = () => {
                 <Form.Control
                   type="text"
                   name="cin"
-                  value={newParticipant.cin}
+                  value={newFormateur.cin}
                   onChange={handleChange}
                   required
                 />
@@ -224,7 +221,7 @@ const Participants = () => {
                 <Form.Control
                   type="text"
                   name="nationalite"
-                  value={newParticipant.nationalite}
+                  value={newFormateur.nationalite}
                   onChange={handleChange}
                   required
                 />
@@ -234,7 +231,7 @@ const Participants = () => {
                 <Form.Control
                   type="text"
                   name="adresse"
-                  value={newParticipant.adresse}
+                  value={newFormateur.adresse}
                   onChange={handleChange}
                   required
                 />
@@ -244,17 +241,17 @@ const Participants = () => {
                 <Form.Control
                   type="text"
                   name="paysOrigine"
-                  value={newParticipant.paysOrigine}
+                  value={newFormateur.paysOrigine}
                   onChange={handleChange}
                   required
                 />
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label>Entité d'origine</Form.Label>
+                <Form.Label>Spécialité</Form.Label>
                 <Form.Control
                   type="text"
-                  name="entiteOrigine"
-                  value={newParticipant.entiteOrigine}
+                  name="specialite"
+                  value={newFormateur.specialite}
                   onChange={handleChange}
                   required
                 />
@@ -265,8 +262,8 @@ const Participants = () => {
                   type="file"
                   name="photo"
                   onChange={(e) =>
-                    setNewParticipant({
-                      ...newParticipant,
+                    setNewFormateur({
+                      ...newFormateur,
                       photo: e.target.files[0],
                     })
                   }
@@ -284,4 +281,4 @@ const Participants = () => {
   );
 };
 
-export default Participants;
+export default Formateurs;
